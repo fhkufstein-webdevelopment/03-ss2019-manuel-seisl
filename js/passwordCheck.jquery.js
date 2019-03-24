@@ -8,9 +8,9 @@ function PasswordChecker(wrapperId, passwordInputFieldId, passwordSubmitButtonId
     this.minLength = 8; //this is what we defined and what we need to consider in our length check
 
     //this attributes are set with our constructor
-    this.wrapperField = $(wrapperId);
-    this.passwordField = $(passwordInputFieldId);
-    this.passwordSubmitButton = $(passwordSubmitButtonId);
+    this.wrapperField = $(wrapperId); // anders als in JS version, $ legt ein jQuery Objekt fest
+    this.passwordField = $(passwordInputFieldId); // anders als in JS version
+    this.passwordSubmitButton = $(passwordSubmitButtonId); // anders als in JS version
 
 
     var that = this; //a trick because this is a keyword and means different things in a new context! Especially when you work with events or if you call functions outside your class "this" won't mean you!
@@ -21,22 +21,22 @@ function PasswordChecker(wrapperId, passwordInputFieldId, passwordSubmitButtonId
     //if we are in the password field an enter text - JavaScript Method "onkeyup" or "onkeup" - again in our case the field this.passwordField
     //if we try to click the submit button - JavaScript Method "onclick" - in our case this.passwordSubmitButton
 
-    this.passwordField.blur(function() {
+    this.passwordField.blur(function() { // anders als in JS version
         //the keyword "this" is always referring to its context.
         //onblur is an event which happens in "passwordField" -> so the keyword "this" would refer to the passwordField NOT to our class
         //therefore we previously saved "this" in a variable called "that"
         that.check();
     });
 
-    this.passwordField.keydown(function() {
+    this.passwordField.keyup(function() { // anders als in JS version
         that.check();
     });
 
-    this.passwordField.focus(function() {
+    this.passwordField.focus(function() { // anders als in JS version
         that.check();
     });
 
-    this.passwordSubmitButton.click(function() {
+    this.passwordSubmitButton.click(function() { // anders als in JS version
         that.check();
     });
 
@@ -51,14 +51,14 @@ function PasswordChecker(wrapperId, passwordInputFieldId, passwordSubmitButtonId
 
             //if it is long enough and has a special character - everything is fine
             if(longEnough && hasSpecialChars) {
-                this.wrapperField.removeClass(this.warningClass + ' ' + this.errorClass).addClass(this.successClass);
-                this.passwordSubmitButton.attr('disabled', false);
+                this.wrapperField.removeClass(this.warningClass + ' ' + this.errorClass).addClass(this.successClass); // anders als in JS version
+                this.passwordSubmitButton.attr('disabled', false); // anders als in JS version, in jQuery gibt es vordefinierte Methoden wie z.B. attr, removeClass, addClass, etc.
             } else if(!hasSpecialChars && longEnough) { //if it is long enough but it has no special character set class warning
-                this.wrapperField.removeClass(this.successClass + ' ' + this.errorClass).addClass(this.warningClass);
-                this.passwordSubmitButton.attr('disabled', true);
+                this.wrapperField.removeClass(this.successClass + ' ' + this.errorClass).addClass(this.warningClass); // anders als in JS version
+                this.passwordSubmitButton.attr('disabled', true); // anders als in JS version
             } else { //if it is not long enough set class error
-                this.wrapperField.removeClass(this.warningClass + ' ' + this.successClass).addClass(this.errorClass);
-                this.passwordSubmitButton.attr('disabled', true);
+                this.wrapperField.removeClass(this.warningClass + ' ' + this.successClass).addClass(this.errorClass); // anders als in JS version
+                this.passwordSubmitButton.attr('disabled', true); // anders als in JS version
             }
 
 
@@ -77,7 +77,11 @@ function PasswordChecker(wrapperId, passwordInputFieldId, passwordSubmitButtonId
     this.checkForLength = function() {
         //@todo
         //have a look at javascript string methods and properties
-        return true; //this needs to be replaced!
+        if (this.passwordField.val().length >= this.minLength){
+            return true;
+        } else {
+            return false; //this needs to be replaced!
+        };
     };
 
     /*
@@ -87,7 +91,13 @@ function PasswordChecker(wrapperId, passwordInputFieldId, passwordSubmitButtonId
         //@todo
         //have a look at javascript string methods and properties
         //you could probably "match" it somehow
-        return true; //this needs to be replaced!
+        var regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
+
+        if (this.passwordField.val().match(regex)){
+            return true;
+        } else {
+            return false; //this needs to be replaced!
+        };
     };
     //TODO 2 end
 }
